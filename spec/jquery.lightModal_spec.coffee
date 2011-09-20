@@ -47,13 +47,18 @@ describe "Light Modal box plugin", ->
       $("#modal_trigger_1").lightModal 'hide'
 
     it "should hide the modal", ->
-      expect($("#modal_1")).toBeHidden()
+      waits 500
+      runs ->
+        expect($("#modal_1")).toBeHidden()
     
     it "should hide the overlay", ->
       expect($(".light-modal-overlay").size()).toEqual(0)
+it "shows the edit input field", ->
 
     it "should hide the modal and overlay when the overlay is clicked", ->
       $("#modal_trigger_1").lightModal 'show'
       $(".light-modal-overlay").click()
-      expect($("#modal_1")).toBeHidden()
-      expect($(".light-modal-overlay").size()).toEqual(0)
+      waits 500
+      runs ->
+        expect($("#modal_1")).toBeHidden()
+        expect($(".light-modal-overlay").size()).toEqual(0)

@@ -53,14 +53,22 @@
         return $("#modal_trigger_1").lightModal('hide');
       });
       it("should hide the modal", function() {
-        return expect($("#modal_1")).toBeHidden();
+        waits(500);
+        return runs(function() {
+          return expect($("#modal_1")).toBeHidden();
+        });
       });
-      it("should hide the overlay", function() {
+      return it("should hide the overlay", function() {
         return expect($(".light-modal-overlay").size()).toEqual(0);
       });
-      return it("should hide the modal and overlay when the overlay is clicked", function() {
-        $("#modal_trigger_1").lightModal('show');
-        $(".light-modal-overlay").click();
+    });
+  });
+  it("shows the edit input field", function() {
+    return it("should hide the modal and overlay when the overlay is clicked", function() {
+      $("#modal_trigger_1").lightModal('show');
+      $(".light-modal-overlay").click();
+      waits(500);
+      return runs(function() {
         expect($("#modal_1")).toBeHidden();
         return expect($(".light-modal-overlay").size()).toEqual(0);
       });

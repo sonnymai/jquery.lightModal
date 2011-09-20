@@ -61,14 +61,14 @@
               return $this.lightModal('hide');
             }
           }, this));
-          return this.$modalContainer.slideDown();
+          return this.$modalContainer.slideDown(200);
         });
       },
       hide: function() {
         return this.each(function() {
           var $this;
           $this = $(this);
-          this.$modalContainer.slideUp();
+          this.$modalContainer.slideUp(200);
           return this.$overlay.remove();
         });
       }

@@ -78,13 +78,13 @@
             # only allow hiding the modal when overlay is clicked if 'overLayDisable is true'
             $this.lightModal('hide')
 
-        @$modalContainer.slideDown()
+        @$modalContainer.slideDown(200)
     
     # Hide/close the modal box
     hide: ->
       @each ->
         $this = $(this)
-        @$modalContainer.slideUp()
+        @$modalContainer.slideUp(200)
         @$overlay.remove()
   
   $.fn.lightModal = (method) ->
