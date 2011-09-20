@@ -1,0 +1,112 @@
+describe("Multiselect swap plugin", function() {
+    var mss;
+    jasmine.getFixtures().fixturesPath = 'spec/fixtures/';
+	
+    beforeEach(function() {
+        mss = $.fn.multiselect_swap;
+        loadFixtures('multiselect_swap.html');
+
+        //initialise fixture
+        $('#countries').multiselect_swap({
+            sort: true
+        });
+
+    });
+
+    function putOptionValuesIntoArray($options, getText){
+        var values = [];
+
+        if(getText == true){
+            $options.each(function(){
+                values.push($(this).text());
+            });
+        }else{
+            $options.each(function(){
+                values.push($(this).val());
+            });
+
+        }
+
+        return values;
+    }
+
+    describe("Rendering", function(){
+        it("should create two new multiselect boxes", function(){
+            expect($('select').size()).toEqual(3);
+        });
+
+        it("should hide the main multiselect", function(){
+            expect($('#countries')).toBeHidden();
+        });
+
+        it("should display selected options in the selected pseudo multiselect", function(){
+            var selected = ['AUT', 'DEU'];
+            var $selected_options = $('#countries-selected option');
+
+            var values = putOptionValuesIntoArray($selected_options);
+
+            for(var j in selected){
+                expect($.inArray(selected[j], values)).toBeGreaterThan(-1);
+            }
+        });
+
+        it("should not display unselected options in the selected pseudo multiselect", function(){
+            var unselected = ['AFG', 'ALB', 'AUS', 'AZE'];
+
+            var values = putOptionValuesIntoArray($('#countries-selected option'));
+
+            for(var j in unselected){
+                expect($.inArray(unselected[j], values)).toEqual(-1);
+            }
+        });
+    });
+
+    describe("Adding", function(){
+        describe("clicking add", function(){
+
+            beforeEach(function() {
+                $('option[value="AFG"]', '#countries-unselected').attr("selected", true);
+                $('a.add', '#countries-container').click();
+
+                selected_values = putOptionValuesIntoArray($('#countries-selected option'));
+                unselected_values = putOptionValuesIntoArray($('#countries-unselected option'));
+            });
+            it("should move an option from the unselected pseudo element to the selected pseudo element", function(){
+                expect($.inArray("AFG", selected_values)).toBeGreaterThan(-1);
+                expect($.inArray("AFG", unselected_values)).toEqual(-1);
+            });
+
+            it("should make the attr selected of the original multiselect selected", function(){
+                expect($('#countries').val()).toContain('AFG');
+            });
+        });
+        describe("clicking remove", function(){
+            beforeEach(function() {
+                $('option[value="AUT"]', '#countries-selected').attr("selected", true);
+                $('a.remove', '#countries-container').click();
+                selected_values = putOptionValuesIntoArray($('#countries-selected option'));
+                unselected_values = putOptionValuesIntoArray($('#countries-unselected option'));
+
+            });
+            it("should move an option from the unselected pseudo element to the selected pseudo element", function(){
+
+                expect($.inArray("AUT", selected_values)).toEqual(-1);
+                expect($.inArray("AUT", unselected_values)).toBeGreaterThan(-1);
+            });
+            it("should make the attr selected of the original multiselect sunelected", function(){
+                expect($('#countries').val()).toNotContain('AUT');
+            });
+
+            it("should display items in alphabetical order", function(){
+                var selected_text = putOptionValuesIntoArray($('#countries-selected option'), true);
+                var selected_sorted = $.extend([], selected_text).sort();
+                var unselected_text = putOptionValuesIntoArray($('#countries-unselected option'), true);
+                var unselected_sorted = $.extend([], unselected_text).sort();
+
+
+                expect(selected_text).toEqual(selected_sorted);
+                expect(unselected_text).toEqual(unselected_sorted);
+            });
+        });
+    });
+});

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Lightmodal</title>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <script src="lib/jquery-1.6.4.min.js"></script>
+  <script src="src/jquery.lightModal.js"></script>
+  <link rel="stylesheet" href="src/lightModal.css" />
+  <style>
+  	#modal_1{
+  		width: 200px;
+  	}
+  </style>
+</head>
+	<body>
+		<div id="modal_1">
+			I'm a modal 1
+		</div>
+
+		<a id="modal_trigger_1" href="#modal_1">Open modal 1</a>
+
+		<div id="modal_2">
+			I'm a modal 2
+		</div>
+
+		<a id="modal_trigger_2" href="#modal_2">Open modal 2</a>
+
+		<div id="modal_3">
+			I'm a modal 3
+		</div>
+
+		<a id="modal_trigger_3">Open modal 3</a>
+
+		<div id="modal_4">
+			I'm a modal 4
+		</div>
+
+		<a id="modal_trigger_4">Open modal 4</a>
+
+		<script>
+	      $("#modal_trigger_1").lightModal();
+	      $("#modal_trigger_2").lightModal();
+		</script>
+	</body>
+</html>

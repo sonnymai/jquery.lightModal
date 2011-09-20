@@ -1,0 +1,174 @@
+(function($) {
+    // Plugin definition
+    /*
+     *  This plugin creates a intuitive ui for using multiselects
+     *  It generates two place holder multi select boxes, one contains all unselected
+     *  options, and the other contains all selected options. Two buttons added to add/remove
+     *  options.
+     */
+    $.fn.multiselect_swap = function(options) {
+        // build main options before element iteration
+        var opts = $.extend({}, $.fn.multiselect_swap.defaults, options);
+
+        // iterate and reformat each matched element
+        return this.each(function() {
+            var $this, self, multiselect_swap;
+            $this = $(this);
+            this.containerId = $this.attr("id") + "-container";
+            this.selectedPseudoElementId = $this.attr("id") + "-selected";
+            this.unselectedPseudoElementId = $this.attr("id") + "-unselected";
+            this.actionsContainerClass = 'multiselect-swap-actions';
+            this.addButtonClass = 'add';
+            this.removeButtonClass = 'remove';
+            this.opts = opts;
+            self = this;
+
+            // Hide the real multiselect
+            $this.hide();
+
+            //Load up the pseudo multiselects
+            _initialisePseudoElements(self);
+            
+            this.$pseudoContainerElement = $("#" + this.containerId);
+            this.$selectedPseudoElement = $("#" + this.selectedPseudoElementId, this.$pseudoContainerElement);
+            this.$unselectedPseudoElement = $("#" + this.unselectedPseudoElementId, this.$pseudoContainerElement);
+            $.fn.multiselect_swap.sort(self);
+        });
+    };
+
+    // Private functions
+    // =================
+
+    function _debug($obj) {
+        if (window.console && window.console.log)
+            window.console.log('multiselect_swap selection count: ' + $obj.size());
+    }
+
+
+    /**
+     * Initialise the Pseudo elements using data from the existing multiselect
+     */
+    function _initialisePseudoElements(obj){
+        var $object, $selectedOptions, $unselectedOptions, $pseudoElements;
+        $object = $(obj);
+
+        $selectedOptions = $('option:selected', $object);
+        $unselectedOptions = $('option:not(:selected)', $object);
+
+        $pseudoElements = _generatePseudoElements(obj, $selectedOptions, $unselectedOptions);
+
+        // Place the pseudo elements before the original element
+        $object.before($pseudoElements);
+        $pseudoElements.append($object);
+    }
+
+
+    /**
+     * Generates the pseudo elements HTML and bindings, returns the jquery object
+     * Does not append the html to the DOM
+     */
+    function _generatePseudoElements(obj, $selectedOptions, $unselectedOptions){
+        var $container, $unselectedContainer, $selectedContainer, $unselected, $selected, $actionsContainer, $addButton, $removeButton;
+
+        //Create the containers
+        $container = $("<div>").attr("id", obj.containerId).addClass("multiselect-swap");
+        $unselectedContainer = $("<div>").addClass("unselected-container").append(
+            $('<label>').text(obj.opts.not_selected_title)
+            );
+        $selectedContainer = $("<div>").addClass("selected-container").append(
+            $('<label>').text(obj.opts.selected_title)
+            );
+
+        // Create the unselected pseudo element to display unselected options
+        $unselected = $("<select>")
+        .attr("id", obj.unselectedPseudoElementId)
+        .attr("multiple", "multiple");
+        $unselectedOptions.each(function(){
+            $unselected.append($(this).clone());
+        });
+        $unselectedContainer.append($unselected);
+        // Create the selected pseudo element, remove "selected" attribute as well
+        $selected = $("<select>")
+        .attr("id", obj.selectedPseudoElementId)
+        .attr("multiple", "multiple");
+        $selectedOptions.each(function(){
+            $selected.append($(this).clone().attr("selected", false));
+        });
+        $selectedContainer.append($selected);
+
+        // Actions menu
+        $actionsContainer = $('<div>').addClass(obj.actionsContainerClass);
+        $addButton = $('<a href="#" class="'+ obj.addButtonClass +'"><span>' + obj.opts.add_button_text + '</span></a>')
+        .click(function(e){
+            e.preventDefault();
+            $.fn.multiselect_swap.handleAdd(this, obj);
+            $.fn.multiselect_swap.sort(obj);
+        });
+        $removeButton = $('<a href="#" class="'+ obj.removeButtonClass +'"><span>' + obj.opts.remove_button_text + '</span></a>')
+        .click(function(e){
+            e.preventDefault();
+            $.fn.multiselect_swap.handleRemove(this, obj);
+            $.fn.multiselect_swap.sort(obj);
+        });
+        //add the buttons to the actions container
+        $actionsContainer.append($addButton, $removeButton)
+
+        return $container.append($unselectedContainer, $actionsContainer, $selectedContainer);
+    }
+
+
+    // Public functions
+    // ================
+
+    /**
+     * Handle the adding of an item to the selected list
+     */
+    $.fn.multiselect_swap.handleAdd = function(element, obj){
+        var selectedValues, $selected;
+        selectedValues = obj.$unselectedPseudoElement.val() || [];
+        for (var i = 0; i < selectedValues.length; i++){
+            $selected = $('option[value="' + selectedValues[i] + '"]', obj.$unselectedPseudoElement);
+            $selected.nextOrPrev().attr('selected',true);
+            obj.$selectedPseudoElement.append($selected.removeAttr("selected"));
+            $.fn.multiselect_swap.setOption(selectedValues[i], true, obj);
+        }
+    };
+
+    $.fn.multiselect_swap.handleRemove = function(element, obj){
+        var selectedValues, $selected;
+        selectedValues = obj.$selectedPseudoElement.val() || [];
+        for (var i = 0; i < selectedValues.length; i++){
+            $selected = $('option[value="' + selectedValues[i] + '"]', obj.$selectedPseudoElement);
+            $selected.nextOrPrev().attr('selected',true);
+            obj.$unselectedPseudoElement.append($selected.removeAttr("selected"));
+            $.fn.multiselect_swap.setOption(selectedValues[i], false, obj);
+        }
+    };
+
+    $.fn.multiselect_swap.sort = function(obj){
+        if(obj.opts.sort === true){
+            $('option', obj.$pseudoContainerElement).tsort();
+        }
+    };
+
+    $.fn.multiselect_swap.setOption = function(value, selected, obj){
+        var $option = $('option[value="' + value + '"]', $(obj));
+
+        if(selected === true){
+            $option.attr("selected", "selected");
+        }else{
+            $option.removeAttr("selected");
+        }
+    };
+
+    // Plugin defaults
+    // ================
+    $.fn.multiselect_swap.defaults = {
+        not_selected_title: "Select an item",
+        selected_title: "Items selected",
+        add_button_text: "add",
+        remove_button_text: "remove",
+        sort: false //if sort is true, jquery.tinysort.js is required
+    };
+
+})(jQuery);
