@@ -17,8 +17,10 @@
           this.options = $.extend({
             modalContainer: modalContainer,
             width: 'auto',
+            closeButtonDisable: true,
             padding: 36,
-            overlayDisable: true,
+            topMargin: 18,
+            overlayDisable: false,
             overlayHtml: '<div class="light-modal-overlay"></div>'
           }, $this.data('lightModal') || {}, options || {});
           if (!data) {
@@ -30,6 +32,7 @@
             }
             this.modalWidth = this.$modalContainer.width();
             this.$overlay = $(this.options.overlayHtml);
+            this.$closeButton = $('<a>').text('Close').addClass('light-modal-close');
             return $this.click(function(e) {
               e.preventDefault();
               return $(this).lightModal('show');
@@ -53,23 +56,31 @@
           $this = $(this);
           this.$modalContainer.width(this.modalWidth - (this.options.padding * 2));
           this.$modalContainer.css('left', ($(window).width() - this.modalWidth) / 2 + 'px');
-          this.$modalContainer.css('top', $(window).scrollTop() + 'px');
+          this.$modalContainer.css('top', $(window).scrollTop() + this.options.topMargin + 'px');
           this.$modalContainer.css('padding', this.options.padding + 'px');
+          if (this.options.closeButtonDisable) {
+            this.$modalContainer.prepend(this.$closeButton);
+            this.$closeButton.click(function(e) {
+              e.preventDefault();
+              return $this.lightModal('hide');
+            });
+          }
           this.$overlay.appendTo('body').click(__bind(function(e) {
             e.preventDefault();
             if (this.options.overlayDisable) {
               return $this.lightModal('hide');
             }
           }, this));
-          return this.$modalContainer.slideDown(200);
+          return this.$modalContainer.show();
         });
       },
       hide: function() {
         return this.each(function() {
           var $this;
           $this = $(this);
-          this.$modalContainer.slideUp(200);
-          return this.$overlay.remove();
+          this.$modalContainer.hide();
+          this.$overlay.remove();
+          return this.$closeButton.remove();
         });
       }
     };

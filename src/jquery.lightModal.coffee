@@ -4,6 +4,14 @@
 # Usage
 # ==================
 # $('.your-button').lightModal({
+#  modalContainer: "#some_container"
+# })
+# LightModal is a a simple and lightweight lighbox/modal plugin. Made for use with 
+# inline content.
+#
+# Usage
+# ==================
+# $('.your-button').lightModal({
 #  modalContainer: '#some_container'
 # })
 (($) ->
@@ -25,8 +33,10 @@
         @options = $.extend(
           modalContainer: modalContainer
           width: 'auto'
+          closeButtonDisable: true
           padding: 36 # Padding
-          overlayDisable: true # Hides the modal box when the overlay (background) is clicked
+          topMargin: 18 # Margin at the top
+          overlayDisable: false # Hides the modal box when the overlay (background) is clicked
           overlayHtml: '<div class="light-modal-overlay"></div>',
           $this.data('lightModal') or {},
           options or {}
@@ -46,6 +56,7 @@
           @modalWidth = @$modalContainer.width()
 
           @$overlay = $(@options.overlayHtml)
+          @$closeButton = $('<a>').text('Close').addClass('light-modal-close')
 
           #Bind a click listener to the element
           $this.click (e) ->
@@ -68,8 +79,15 @@
         # Set up the dimentions and position on the page
         @$modalContainer.width @modalWidth - (@options.padding * 2)
         @$modalContainer.css 'left', ($(window).width() - @modalWidth)/2 + 'px'
-        @$modalContainer.css 'top', $(window).scrollTop() + 'px'
+        @$modalContainer.css 'top', $(window).scrollTop() + @options.topMargin + 'px'
         @$modalContainer.css 'padding', @options.padding + 'px'
+
+        # Add the close button
+        if @options.closeButtonDisable
+          @$modalContainer.prepend @$closeButton
+          @$closeButton.click (e) ->
+            e.preventDefault()
+            $this.lightModal('hide')
 
         # Add an overlay to the page
         @$overlay.appendTo('body').click (e) =>
@@ -78,14 +96,15 @@
             # only allow hiding the modal when overlay is clicked if 'overLayDisable is true'
             $this.lightModal('hide')
 
-        @$modalContainer.slideDown(200)
+        @$modalContainer.show()
     
     # Hide/close the modal box
     hide: ->
       @each ->
         $this = $(this)
-        @$modalContainer.slideUp(200)
+        @$modalContainer.hide()
         @$overlay.remove()
+        @$closeButton.remove()
   
   $.fn.lightModal = (method) ->
     if methods[method]

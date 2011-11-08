@@ -1,0 +1,31 @@
+@import 'reset';
+$baseline: 18px;
+body{
+	margin: 0;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 13px;
+	font-weight: normal;
+	line-height: $baseline;
+	color: #666666;
+	text-rendering: optimizeLegibility;
+	background-color: #dadada;
+}
+
+h1{
+	color: #000;
+	font-size: $baseline * 3;
+	line-height: $baseline * 3;
+	margin: -18px -18px 18px;
+	background-color: #DADADA;
+	font-weight: bold;
+	span{
+		font-weight: normal;
+	}
+}
+
+section{
+	width: 600px;
+	padding: $baseline;
+	margin: $baseline auto;
+	background-color: #fff;
+}

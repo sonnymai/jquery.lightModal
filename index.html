@@ -7,41 +7,49 @@
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
   <script src="lib/jquery-1.6.4.min.js"></script>
-  <script src="src/jquery.lightModal.js"></script>
-  <link rel="stylesheet" href="src/lightModal.css" />
-  <style>
-  	#modal_1{
-  		width: 200px;
-  	}
-  </style>
+
+  <script src="lightModal/jquery.lightModal.js"></script>
+  <link rel="stylesheet" href="lightModal/lightModal.css" />
+
+  <!-- This stylesheet is not required -->
+  <link rel="stylesheet" href="src/stylesheets/styles.css" />
 </head>
 	<body>
-		<div id="modal_1">
-			I'm a modal 1
-		</div>
+		<section>
+			<h1><span>light</span>Modal</h1>
+			<p>Light modal is a jquery modal/lightbox built to be as lightweight and unobtrusive as possible.</p>
+			<p>
+			It was originally built to be able to accomodate a tinymce edit area inside a modal box. It was really hard to find one that could let you put tinyMCE inside, so I built this one.
+			</p>
+			<div id="modal_1">
+				I'm a modal 1
+			</div>
 
-		<a id="modal_trigger_1" href="#modal_1">Open modal 1</a>
+			<a id="modal_trigger_1" href="#modal_1">Open modal 1</a>
+			<a id="modal_trigger_1_other" href="#modal_1">Open modal 1 other link</a>
 
-		<div id="modal_2">
-			I'm a modal 2
-		</div>
+			<div id="modal_2">
+				I'm a modal 2
+			</div>
 
-		<a id="modal_trigger_2" href="#modal_2">Open modal 2</a>
+			<a id="modal_trigger_2" href="#modal_2">Open modal 2</a>
 
-		<div id="modal_3">
-			I'm a modal 3
-		</div>
+			<div id="modal_3">
+				I'm a modal 3
+			</div>
 
-		<a id="modal_trigger_3">Open modal 3</a>
+			<a id="modal_trigger_3">Open modal 3</a>
 
-		<div id="modal_4">
-			I'm a modal 4
-		</div>
+			<div id="modal_4">
+				I'm a modal 4
+			</div>
 
-		<a id="modal_trigger_4">Open modal 4</a>
+			<a id="modal_trigger_4">Open modal 4</a>
+		</section>
 
 		<script>
 	      $("#modal_trigger_1").lightModal();
+	      $("#modal_trigger_1_other").lightModal();
 	      $("#modal_trigger_2").lightModal();
 		</script>
 	</body>
