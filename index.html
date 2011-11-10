@@ -17,15 +17,49 @@
 	<body>
 		<section>
 			<h1><span>light</span>Modal</h1>
-			<p>Light modal is a jquery modal/lightbox built to be as lightweight and unobtrusive as possible.</p>
+			<h3>YALB? (Yet Another Light Box?)</h3>
 			<p>
-			It was originally built to be able to accomodate a tinymce edit area inside a modal box. It was really hard to find one that could let you put tinyMCE inside, so I built this one.
+				It was really hard to find a modal/lightbox that could let you put an instance of tinyMCE inside, so we built this one.
 			</p>
+			<p>
+				We built it to use on our product <a href="http://lessplan.com">LessPlan</a>, a web application to help teachers generate and share lesson plans.
+			</p>
+		</section>
+
+		<section>
+			<h3>Features</h3>
+			<ul>
+				<li>Custom callbacks for onShow and onHide</li>
+				<li>Click overlay to hide</li>
+				<li>Disablable close button</li>
+			</ul>
+		</section>
+
+		<section>
+			<h3>How</h3>
+			<p>
+				Typical modal/lightbox plugins clone markup and reinsert it into the plugin's own container. This works fine until you have javascript bound to elements or iframes. 
+				lightModal, takes a different approach by making the original content container the lightbox, thus keeping any javascript bindings.
+			</p>
+		</section>
+
+		<section>
+			<h3>Basic usage</h3>
+			<p>This is the most basic example</p>
+
+			<!-- Basic usage code -->
+			<a id="modal_trigger_1" class="btn" href="#modal_1">Open modal</a>
 			<div id="modal_1">
-				I'm a modal 1
+				<h2>I'm a modal</h2>
+				<p>Put anything inside</p>
 			</div>
 
-			<a id="modal_trigger_1" href="#modal_1">Open modal 1</a>
+			<script>
+		      $("#modal_trigger_1").lightModal()
+			</script>
+			<!-- END Basic usage code -->
+
+			<!-- Allow overlay click to close usage code -->
 			<a id="modal_trigger_1_other" href="#modal_1">Open modal 1 other link</a>
 
 			<div id="modal_2">
@@ -47,10 +81,52 @@
 			<a id="modal_trigger_4">Open modal 4</a>
 		</section>
 
+		<section>
+			<h3>Options</h3>
+			<table>
+				<thead>
+					<tr>
+						<th>Option key</th>
+						<th>Explanation</th>
+						<th>Default</th>
+					</tr>
+		        </thead>
+		        <tbody>
+					<tr>
+						<td>
+							modalContainer
+						</td>
+						<td>
+							modalContainer
+						</td>
+						<td>
+							modalContainer
+						</td>
+					</tr>
+		        </tbody>
+			</table>
+<!--           modalContainer: modalContainer
+          width: 'auto'
+          closeButtonDisable: true
+          padding: 36 # Padding
+          topMargin: 18 # Margin at the top
+          overlayDisable: false # Hides the modal box when the overlay (background) is clicked
+          overlayHtml: '<div class="light-modal-overlay"></div>'
+          onShow: ->
+            # Function that gets called on show
+          onHide: -> -->
+		</section>
+
+
+		<footer>
+			<p>Happily made by <a href="http://lowfiredanger.com.au">Low Fire Danger</a>
+		</footer>
+
+
 		<script>
 	      $("#modal_trigger_1").lightModal();
-	      $("#modal_trigger_1_other").lightModal();
-	      $("#modal_trigger_2").lightModal();
 		</script>
+
+
 	</body>
 </html>

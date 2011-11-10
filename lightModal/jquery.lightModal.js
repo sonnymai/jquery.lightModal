@@ -21,7 +21,9 @@
             padding: 36,
             topMargin: 18,
             overlayDisable: false,
-            overlayHtml: '<div class="light-modal-overlay"></div>'
+            overlayHtml: '<div class="light-modal-overlay"></div>',
+            onShow: function() {},
+            onHide: function() {}
           }, $this.data('lightModal') || {}, options || {});
           if (!data) {
             this.$modalContainer = $(this.options.modalContainer);
@@ -71,7 +73,8 @@
               return $this.lightModal('hide');
             }
           }, this));
-          return this.$modalContainer.show();
+          this.$modalContainer.show();
+          return this.options.onShow();
         });
       },
       hide: function() {
@@ -80,7 +83,8 @@
           $this = $(this);
           this.$modalContainer.hide();
           this.$overlay.remove();
-          return this.$closeButton.remove();
+          this.$closeButton.remove();
+          return this.options.onHide();
         });
       }
     };

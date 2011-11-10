@@ -15,7 +15,11 @@ describe "Light Modal box plugin", ->
   beforeEach ->
     loadFixtures "modals.html"
     $("#modal_trigger_1").lightModal()
-    $("#modal_trigger_2").lightModal()
+    $("#modal_trigger_2").lightModal
+      onShow: ->
+        $('#modal2_status').text('showing')
+      onHide: ->
+        $('#modal2_status').text('hidden')
   
   describe "Initialisation", ->
     it "should hide the modal", ->
@@ -41,10 +45,17 @@ describe "Light Modal box plugin", ->
       expect($(".light-modal-overlay")).toBeVisible()
       expect($(".light-modal-overlay").size()).toEqual(1)
 
+    it "should execute the onShow function", ->
+      $("#modal_trigger_2").lightModal 'show'
+      expect($('#modal2_status').text()).toEqual('showing')
+      $("#modal_trigger_2").lightModal 'hide'
+
   describe "Hiding", ->
     beforeEach ->
       $("#modal_trigger_1").lightModal 'show'
       $("#modal_trigger_1").lightModal 'hide'
+      $("#modal_trigger_2").lightModal 'show'
+      $("#modal_trigger_2").lightModal 'hide'
 
     it "should hide the modal", ->
       waits 500
@@ -53,6 +64,10 @@ describe "Light Modal box plugin", ->
     
     it "should hide the overlay", ->
       expect($(".light-modal-overlay").size()).toEqual(0)
+
+    it "should execute the onHide function", ->
+      expect($('#modal2_status').text()).toEqual('hidden')
+
 it "shows the edit input field", ->
 
     it "should hide the modal and overlay when the overlay is clicked", ->

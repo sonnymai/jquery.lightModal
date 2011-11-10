@@ -1,5 +1,33 @@
-@import 'reset';
 $baseline: 18px;
+
+@import 'reset';
+@import 'bourbon';
+@import 'bootstrap/tables';
+
+
+@mixin btn {
+  display: inline-block;
+  border: none;
+  @include border-radius(3px);
+  @include box-shadow(inset 0px 0px 0px 0px rgba(255, 115, 100, 0.4), 0 3px 3px #666);
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 1;
+  text-transform: uppercase;
+  padding: 11px 13px;
+  text-align: center;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:active {
+    @include linear-gradient(top, #d43c28 0%, #ad3224 50%, #9c1500 50%, #700d00 100%);
+    @include box-shadow(inset 0px 0px 0px 1px rgba(255, 115, 100, 0.4));
+  }
+}
+
 body{
 	margin: 0;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -23,13 +51,57 @@ h1{
 	}
 }
 
+.spiel{
+	font-weight: bold;
+	font-size: $baseline;
+	padding: $baseline;
+	text-align: center;
+}
+
+h2{
+	font-weight: bold;
+	font-size: $baseline * 2;
+	line-height: $baseline * 2;
+	margin-bottom: $baseline;
+}
+h3{
+	font-weight: bold;
+	font-size: $baseline * 1.5;
+	line-height: $baseline * 2;
+	margin-bottom: $baseline;
+}
+
 p{
 	margin-bottom: $baseline;
 }
 
-section{
+a{
+	text-decoration: none;
+	&:hover{
+		text-decoration: none;
+	}
+}
+
+ul{
+	list-style: disc;
+
+	li{
+		margin-left: $baseline;
+	}
+}
+
+footer, section{
 	width: 600px;
 	padding: $baseline;
 	margin: $baseline auto;
 	background-color: #fff;
+}
+
+.btn{
+	@include btn;
+	@include linear-gradient(top, #2dd55c 0%, #068045 100%);
+
+	&:hover{
+	    @include linear-gradient(top, #5ee584 0%, #3d8c53 100%);
+	}
 }

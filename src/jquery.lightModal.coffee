@@ -37,7 +37,11 @@
           padding: 36 # Padding
           topMargin: 18 # Margin at the top
           overlayDisable: false # Hides the modal box when the overlay (background) is clicked
-          overlayHtml: '<div class="light-modal-overlay"></div>',
+          overlayHtml: '<div class="light-modal-overlay"></div>'
+          onShow: ->
+            # Function that gets called on show
+          onHide: ->
+            # Function that gets called on hide
           $this.data('lightModal') or {},
           options or {}
         )
@@ -97,6 +101,7 @@
             $this.lightModal('hide')
 
         @$modalContainer.show()
+        @options.onShow()
     
     # Hide/close the modal box
     hide: ->
@@ -105,6 +110,7 @@
         @$modalContainer.hide()
         @$overlay.remove()
         @$closeButton.remove()
+        @options.onHide()
   
   $.fn.lightModal = (method) ->
     if methods[method]

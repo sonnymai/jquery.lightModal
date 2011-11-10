@@ -19,7 +19,14 @@
     beforeEach(function() {
       loadFixtures("modals.html");
       $("#modal_trigger_1").lightModal();
-      return $("#modal_trigger_2").lightModal();
+      return $("#modal_trigger_2").lightModal({
+        onShow: function() {
+          return $('#modal2_status').text('showing');
+        },
+        onHide: function() {
+          return $('#modal2_status').text('hidden');
+        }
+      });
     });
     describe("Initialisation", function() {
       it("should hide the modal", function() {
@@ -42,15 +49,22 @@
         expect($("#modal_1")).toBeVisible();
         return expect($("#modal_2")).toBeHidden();
       });
-      return it("should have an overlay", function() {
+      it("should have an overlay", function() {
         expect($(".light-modal-overlay")).toBeVisible();
         return expect($(".light-modal-overlay").size()).toEqual(1);
+      });
+      return it("should execute the onShow function", function() {
+        $("#modal_trigger_2").lightModal('show');
+        expect($('#modal2_status').text()).toEqual('showing');
+        return $("#modal_trigger_2").lightModal('hide');
       });
     });
     return describe("Hiding", function() {
       beforeEach(function() {
         $("#modal_trigger_1").lightModal('show');
-        return $("#modal_trigger_1").lightModal('hide');
+        $("#modal_trigger_1").lightModal('hide');
+        $("#modal_trigger_2").lightModal('show');
+        return $("#modal_trigger_2").lightModal('hide');
       });
       it("should hide the modal", function() {
         waits(500);
@@ -58,8 +72,11 @@
           return expect($("#modal_1")).toBeHidden();
         });
       });
-      return it("should hide the overlay", function() {
+      it("should hide the overlay", function() {
         return expect($(".light-modal-overlay").size()).toEqual(0);
+      });
+      return it("should execute the onHide function", function() {
+        return expect($('#modal2_status').text()).toEqual('hidden');
       });
     });
   });
