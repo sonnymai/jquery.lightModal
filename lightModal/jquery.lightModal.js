@@ -1,5 +1,4 @@
-(function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
   (function($) {
     var methods;
     methods = {
@@ -17,7 +16,7 @@
           this.options = $.extend({
             modalContainer: modalContainer,
             width: 'auto',
-            closeButtonDisable: true,
+            closeButtonDisable: false,
             padding: 36,
             topMargin: 18,
             overlayDisable: false,
@@ -55,24 +54,23 @@
       show: function() {
         return this.each(function() {
           var $this;
+          var _this = this;
           $this = $(this);
           this.$modalContainer.width(this.modalWidth - (this.options.padding * 2));
           this.$modalContainer.css('left', ($(window).width() - this.modalWidth) / 2 + 'px');
           this.$modalContainer.css('top', $(window).scrollTop() + this.options.topMargin + 'px');
           this.$modalContainer.css('padding', this.options.padding + 'px');
-          if (this.options.closeButtonDisable) {
+          if (!this.options.closeButtonDisable) {
             this.$modalContainer.prepend(this.$closeButton);
             this.$closeButton.click(function(e) {
               e.preventDefault();
               return $this.lightModal('hide');
             });
           }
-          this.$overlay.appendTo('body').click(__bind(function(e) {
+          this.$overlay.appendTo('body').click(function(e) {
             e.preventDefault();
-            if (this.options.overlayDisable) {
-              return $this.lightModal('hide');
-            }
-          }, this));
+            if (_this.options.overlayDisable) return $this.lightModal('hide');
+          });
           this.$modalContainer.show();
           return this.options.onShow();
         });
@@ -98,4 +96,3 @@
       }
     };
   })(jQuery);
-}).call(this);

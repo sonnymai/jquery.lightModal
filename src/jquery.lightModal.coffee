@@ -33,7 +33,7 @@
         @options = $.extend(
           modalContainer: modalContainer
           width: 'auto'
-          closeButtonDisable: true
+          closeButtonDisable: false
           padding: 36 # Padding
           topMargin: 18 # Margin at the top
           overlayDisable: false # Hides the modal box when the overlay (background) is clicked
@@ -87,7 +87,7 @@
         @$modalContainer.css 'padding', @options.padding + 'px'
 
         # Add the close button
-        if @options.closeButtonDisable
+        unless @options.closeButtonDisable
           @$modalContainer.prepend @$closeButton
           @$closeButton.click (e) ->
             e.preventDefault()
