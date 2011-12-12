@@ -99,17 +99,21 @@
           if @options.overlayDisable
             # only allow hiding the modal when overlay is clicked if 'overLayDisable is true'
             $this.lightModal('hide')
+        
+        $(document).bind 'keyup.lightModal', (e) ->
+          $this.lightModal('hide') if (e.keyCode == 27)
 
-        @$modalContainer.show()
+        @$modalContainer.slideDown()
         @options.onShow()
     
     # Hide/close the modal box
     hide: ->
       @each ->
         $this = $(this)
-        @$modalContainer.hide()
+        @$modalContainer.slideUp()
         @$overlay.remove()
         @$closeButton.remove()
+        $(document).unbind 'keyup.lightModal'
         @options.onHide()
   
   $.fn.lightModal = (method) ->

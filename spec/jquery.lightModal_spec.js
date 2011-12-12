@@ -1,4 +1,4 @@
-(function() {
+
   describe("Light Modal box plugin", function() {
     var putOptionValuesIntoArray;
     putOptionValuesIntoArray = function($options, getText) {
@@ -40,7 +40,8 @@
     });
     describe("Showing", function() {
       beforeEach(function() {
-        return $("#modal_trigger_1").lightModal('show');
+        $("#modal_trigger_1").lightModal('show');
+        return $('.modal').stop();
       });
       afterEach(function() {
         return $("#modal_trigger_1").lightModal('hide');
@@ -64,7 +65,8 @@
         $("#modal_trigger_1").lightModal('show');
         $("#modal_trigger_1").lightModal('hide');
         $("#modal_trigger_2").lightModal('show');
-        return $("#modal_trigger_2").lightModal('hide');
+        $("#modal_trigger_2").lightModal('hide');
+        return $('.modal').stop();
       });
       it("should hide the modal", function() {
         waits(500);
@@ -80,6 +82,7 @@
       });
     });
   });
+
   it("shows the edit input field", function() {
     return it("should hide the modal and overlay when the overlay is clicked", function() {
       $("#modal_trigger_1").lightModal('show');
@@ -91,4 +94,3 @@
       });
     });
   });
-}).call(this);

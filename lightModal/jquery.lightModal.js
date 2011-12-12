@@ -71,7 +71,10 @@
             e.preventDefault();
             if (_this.options.overlayDisable) return $this.lightModal('hide');
           });
-          this.$modalContainer.show();
+          $(document).bind('keyup.lightModal', function(e) {
+            if (e.keyCode === 27) return $this.lightModal('hide');
+          });
+          this.$modalContainer.slideDown();
           return this.options.onShow();
         });
       },
@@ -79,9 +82,10 @@
         return this.each(function() {
           var $this;
           $this = $(this);
-          this.$modalContainer.hide();
+          this.$modalContainer.slideUp();
           this.$overlay.remove();
           this.$closeButton.remove();
+          $(document).unbind('keyup.lightModal');
           return this.options.onHide();
         });
       }

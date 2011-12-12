@@ -33,6 +33,7 @@ describe "Light Modal box plugin", ->
   describe "Showing", ->
     beforeEach ->
       $("#modal_trigger_1").lightModal 'show'
+      $('.modal').stop()
 
     afterEach ->
       $("#modal_trigger_1").lightModal 'hide'
@@ -56,6 +57,7 @@ describe "Light Modal box plugin", ->
       $("#modal_trigger_1").lightModal 'hide'
       $("#modal_trigger_2").lightModal 'show'
       $("#modal_trigger_2").lightModal 'hide'
+      $('.modal').stop()
 
     it "should hide the modal", ->
       waits 500
